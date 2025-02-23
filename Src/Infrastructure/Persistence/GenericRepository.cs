@@ -63,6 +63,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await ApplySpecToQuery(spec).CountAsync(cancellationToken);
     }
 
+    public IQueryable<T> GetQueryBySpec(ISpecification<T> spec, CancellationToken cancellationToken)
+    {
+        return ApplySpecToQuery(spec);
+    }
+
     private IQueryable<T> ApplySpecToQuery(ISpecification<T> spec)
     {
         return SpecificationEvaluator<T>.GetQuery(_dbSet.AsQueryable(), spec);

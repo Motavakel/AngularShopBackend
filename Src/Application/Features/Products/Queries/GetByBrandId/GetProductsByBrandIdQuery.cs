@@ -3,6 +3,7 @@ using Application.Dtos.Products;
 using AutoMapper;
 using Domain.Entities.ProductEntity;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Products.Queries.GetByBrandId;
 
@@ -28,7 +29,9 @@ public class GetProductsByBrandIdQueryHandler : IRequestHandler<GetProductsByBra
     public async Task<IEnumerable<ProductHeroSlider>> Handle(GetProductsByBrandIdQuery request, CancellationToken cancellationToken)
     {
         var spec = new ProductByBrandIdSpec(request.Id);
-        var products = await _uow.Repository<Product>().GetListBySpecAsync(spec, cancellationToken);
-        return _mapper.Map<IEnumerable<ProductHeroSlider>>(products);
+        return await _uow.Repository<Product>()
+            .GetQueryBySpec(spec, cancellationToken)
+            .Select(p => _mapper.Map<ProductHeroSlider>(p)) // اینجا مپ رو استفاده کن
+            .ToListAsync();
     }
 }
