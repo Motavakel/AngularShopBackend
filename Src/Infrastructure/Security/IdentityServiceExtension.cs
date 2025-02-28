@@ -94,7 +94,7 @@ public static class IdentityServiceExtension
                 context.HandleResponse();
                 context.Response.StatusCode = 401;
                 context.Response.ContentType = "application/json";
-                var result = JsonConvert.SerializeObject(new ApiToReturn(401, "شما اهراز هویت نشده اید"));
+                var result = JsonConvert.SerializeObject(new ApiToReturn(401, "شما احراز هویت نشده اید"));
                 return context.Response.WriteAsync(result);
             },
             OnForbidden = context =>

@@ -9,6 +9,6 @@ public class ProductByBrandIdSpec : BaseSpecification<Product>
     public ProductByBrandIdSpec(int id):base(p => p.ProductBrandId == id)
     {
         AddOrderByDesc(x => x.Id);
-        Take = 5;
+        ApplyPaging(0, 5);
     }
 }

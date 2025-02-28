@@ -7,6 +7,7 @@ namespace Application.Contracts;
 public interface IGenericRepository<T> where T : BaseEntity
 {
     Task<IReadOnlyList<T>> GetAllAsync(CancellationToken cancellationToken);
+    IQueryable<T> GetAllQuery(CancellationToken cancellationToken);
     Task AddAsync(T dto, CancellationToken cancellationToken);
     void Update(T entity);
     Task Delete(T entity, CancellationToken cancellationToken);

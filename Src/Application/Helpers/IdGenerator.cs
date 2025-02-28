@@ -25,6 +25,7 @@ http://localhost:9001/api/products?brandId=2&typeId=5&search=test
  
 request.Path = api/products
 request.Query = products?brandId=2&typeId=5&search=test 
- 
+
+final string = api/products|brandId-2|search-test|typeId-5
  
  */

@@ -9,5 +9,6 @@ public class GetAllProductsQuery : RequestParametersBasic, IRequest<PaginationRe
 {
     public int? BrandId { get; set; }
     public int? TypeId { get; set; }
+    public decimal? CurrentPrice { get; set; }
 }
 

@@ -31,7 +31,7 @@ public class GetProductsByBrandIdQueryHandler : IRequestHandler<GetProductsByBra
         var spec = new ProductByBrandIdSpec(request.Id);
         return await _uow.Repository<Product>()
             .GetQueryBySpec(spec, cancellationToken)
-            .Select(p => _mapper.Map<ProductHeroSlider>(p)) // اینجا مپ رو استفاده کن
+            .Select(p => _mapper.Map<ProductHeroSlider>(p))
             .ToListAsync();
     }
 }

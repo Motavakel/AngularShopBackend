@@ -52,12 +52,11 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserDto>
             {
                 Console.WriteLine(error.Description); 
             }
-            //throw new BadRequestEntityException(result.Errors.FirstOrDefault()!.Description);
             throw new BadRequestEntityException(result.Errors.Select(x =>x.Description).ToList());
         }
 
         var roleResult = await _userManager.AddToRoleAsync(user, RoleType.User.ToString());
-        if (!roleResult.Succeeded) throw new BadRequestEntityException(roleResult.Errors.FirstOrDefault()!.Description);
+        if (!roleResult.Succeeded) throw new BadRequestEntityException("نقش های موردنظر هنوز به دیتابیس اضافه نشده اند");
 
         var mapUser = _mapper.Map<UserDto>(user);
         mapUser.Token = await _tokenService.CreateToken(user);

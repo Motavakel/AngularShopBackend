@@ -1,7 +1,11 @@
 ﻿using Domain.Entities.ProductEntity;
+using Domain.Enums;
 using Infrastructure.Persistence.Context;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace Infrastructure.Persistence.SeedData;
 
@@ -9,7 +13,7 @@ public class GenerateFakeData
 {
 
 
-    public static async Task SeedDataAsync(ApplicationDbContext context, ILoggerFactory loggerFactory)
+    public static async Task SeedDataAsync(ApplicationDbContext context, IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
     {
         try
         {
@@ -21,6 +25,9 @@ public class GenerateFakeData
 
             if (!await context.Products.AnyAsync())
                 await SeedProductsAsync(context);
+
+            // Seed roles
+            await SeedRolesAsync(serviceProvider, loggerFactory);
         }
         catch (Exception e)
         {
@@ -28,6 +35,31 @@ public class GenerateFakeData
             logger.LogError(e, "Error in seed data");
         }
     }
+    private static async Task SeedRolesAsync(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+    {
+        try
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            string[] roles = { RoleType.User.ToString(), RoleType.Admin.ToString() };
+
+            foreach (var role in roles)
+            {
+                var roleExists = await roleManager.RoleExistsAsync(role);
+                if (!roleExists)
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            var logger = loggerFactory.CreateLogger<GenerateFakeData>();
+            logger.LogError(e, "Error in seeding roles");
+        }
+    }
+
+    
 
     private static async Task SeedBrandsAsync(ApplicationDbContext context)
     {
@@ -171,4 +203,6 @@ public class GenerateFakeData
         await context.Products.AddRangeAsync(products);
         await context.SaveChangesAsync();
     }
+
+
 }

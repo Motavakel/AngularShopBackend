@@ -26,6 +26,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await _dbSet.ToListAsync(cancellationToken);
     }
 
+    public IQueryable<T> GetAllQuery(CancellationToken cancellationToken)
+    {
+        return _dbSet.AsQueryable();
+    }
+
+
     public async Task AddAsync(T dto, CancellationToken cancellationToken)
     {
         await _dbSet.AddAsync(dto, cancellationToken);
@@ -67,6 +73,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         return ApplySpecToQuery(spec);
     }
+
 
     private IQueryable<T> ApplySpecToQuery(ISpecification<T> spec)
     {

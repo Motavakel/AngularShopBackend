@@ -74,7 +74,7 @@ var context = services.GetRequiredService<ApplicationDbContext>();
 try
 {
     await context.Database.MigrateAsync();
-    await GenerateFakeData.SeedDataAsync(context, loggerFactory);
+    await GenerateFakeData.SeedDataAsync(context, services, loggerFactory);
 }
 catch (Exception e)
 {

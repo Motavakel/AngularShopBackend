@@ -2,6 +2,7 @@
 using Application.Features.Products.Queries.Get;
 using Application.Features.Products.Queries.GetAll;
 using Application.Features.Products.Queries.GetByBrandId;
+using Application.Features.Products.Queries.GetLastProducts;
 using Microsoft.AspNetCore.Mvc;
 using Web.Common;
 
@@ -16,6 +17,12 @@ public class ProductsController : BaseApiController
         return Ok(await Mediator.Send(request, cancellationToken));
     }
 
+    [HttpGet("last")]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetLastProduct(CancellationToken cancellationToken)
+    {
+        return Ok(await Mediator.Send(new GetLastProductQuery(), cancellationToken));
+    }
+
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ProductDto>> Get([FromRoute] int id, CancellationToken cancellationToken)
     {
@@ -28,4 +35,6 @@ public class ProductsController : BaseApiController
     {
         return Ok(await Mediator.Send(new GetProductsByBrandIdQuery(id), cancellationToken));
     }
+
+    
 }

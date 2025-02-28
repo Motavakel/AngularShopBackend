@@ -58,6 +58,8 @@ public class Expression
             &&
             (!specParams.BrandId.HasValue || x.ProductBrandId == specParams.BrandId.Value)
             &&
-            (!specParams.TypeId.HasValue || x.ProductTypeId == specParams.TypeId.Value);
+            (!specParams.TypeId.HasValue || x.ProductTypeId == specParams.TypeId.Value)
+            &&
+            (!specParams.CurrentPrice.HasValue || x.Price <= specParams.CurrentPrice.Value);
     }
 }
